@@ -1,12 +1,12 @@
-    通过对上面参数的说明，不难发现。要想获得服务器的请求量，连接数很容易。而且我们可以写一个监控程序，每隔1s调用一下stub_status的location，在和上一秒做一个减法就可以得的nginx服务器QPS。但是遗憾的是，如何想要的到nginx处理请求的平均响应时间，就没法解决了。如果有人找你说你们的http接口总数timeout，那就郁闷了。我的服务想要到底多长时间？这个问题就急需要解决。
-  nginx的stub_status模块是nginx监控的重要模块，但是该模块并没有返回请求的响应时间，当我们对系统监控的时候，就缺少了一个服务响应时间的维度。该程序就是在accepts handled requests后面加一个返回值，即服务器处理每个请求响应时间的和。这样要想看当前服务的响应时间，就只需要，和上一秒请求时间做差然后除以这一秒处理的handled值即可。
+  通过对stub_status的返回结果，不难发现。要想获得服务器的请求量，连接数很容易。而且我们可以写一个监控程序，每隔1s调用一下stub_status的location，在和上一秒做一个减法就可以得的nginx服务器QPS。但是遗憾的是，如何想要得到nginx处理请求的平均响应时间，就没法解决了。如果有人找你说你的http接口总是timeout，那就郁闷了。我的服务响应到底多长时间？这个问题就急需要解决。
+  该程序就是在accepts handled requests后面加一个返回值，即服务器处理每个请求响应时间的和。这样要想看当前服务的响应时间，就只需要，和上一秒请求时间做差然后除以这一秒处理的handled值即可。
   
   
 使用方法:
 参考nginx官网 http://nginx.org/en/docs/http/ngx_http_stub_status_module.html
 
 修改内容:
-总共修改了 ngx_http_stub_status_module.c,ngx_event.h,ngx_event.c，三个文件。具体修改的代码行数。可用文件比对工具查看。
+修改了 ngx_http_stub_status_module.c,ngx_event.h,ngx_event.c，三个文件。具体修改的代码行数。可用文件比对工具查看。
 
 修改效果比对：
 修改前：
